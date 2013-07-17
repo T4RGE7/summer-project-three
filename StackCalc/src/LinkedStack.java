@@ -62,5 +62,29 @@ public class LinkedStack<T> implements LinkedStackInterface<Object>{
 		for(; this.current.getPointer() != null; this.current = this.current.getPointer(), toReturn++);
 		return toReturn;
 	}
+	
+	public boolean contains(T element) {
+		if(this.isEmpty()) {
+			return false;
+		}
+		this.current = this.head;
+		while(this.current != null) {
+			if(this.current.getData() == element) {
+				return true;
+			}
+			this.current = this.current.getPointer();
+		}
+		return false;
+	}
+	
+	public String toString() {
+		if(this.isEmpty()) {
+			return null;
+		}
+		this.current = this.head;
+		String toReturn = this.current.getData().toString();
+		for(; this.current.getPointer() != null; this.current = this.current.getPointer(), toReturn += this.current.getData().toString());
+		return toReturn;
+	}
 
 }
