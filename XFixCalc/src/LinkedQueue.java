@@ -1,4 +1,8 @@
-
+/**
+ * 
+ * @author James Roberts jpr242
+ *
+ */
 public class LinkedQueue<T> extends LinkedList<T> implements QueueInterface<T> {
 
 	public LinkedQueue() {
