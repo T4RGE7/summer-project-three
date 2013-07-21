@@ -36,7 +36,7 @@ public class Driver {
 		System.out.println(test2.answer());
 		
 		
-		test = "(7+3)/4";
+		test = "30";
 		InFix test3 = new InFix(test);
 		System.out.println(test3.answer());
 		

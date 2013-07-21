@@ -1,3 +1,4 @@
+
 /**
  * 
  * @author James Roberts jpr242
@@ -34,7 +35,8 @@ public class PostFix {
 			if((read <= 57 && read >= 48) || read == ' ' || read == '-' || read == '+' || read == '*' || read == '/' || read == '.') {
 				this.buffer.add(read);
 			} else {
-				throw new IllegalArgumentException();
+				System.err.println("postfix line 38");
+				throw new IllegalInputException();
 			}
 		}
 		boolean num1done = false;
@@ -45,8 +47,7 @@ public class PostFix {
 			try {
 				head = this.buffer.poll();
 			} catch (EmptyListException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.err.println("postfix line 49");
 			}
 			if(!num1done && head <= 57 && head >= 48) {
 				num += head;
@@ -56,17 +57,26 @@ public class PostFix {
 					num1dbl = true;
 				} else {
 					//invalid number
+					System.err.println("postfix line 60");
 					throw new IllegalInputException();
 				}
 			} else if(head == ' ' && num.length() >= 1) {
-				this.stack.push(Double.parseDouble(num));
+				try {
+					this.stack.push(Double.parseDouble(num));
+				} catch (NumberFormatException e) {
+					throw new IllegalInputException();
+				}
 				num = "";
 				num1dbl = false;
 			} else if(head == ' ') {
 				continue;
 			} else if(head == '+' || head == '-' || head == '*' || head == '/') {
 				if(num.length() >= 1) {
-					this.stack.push(Double.parseDouble(num));
+					try {
+						this.stack.push(Double.parseDouble(num));
+					} catch (NumberFormatException e) {
+						throw new IllegalInputException();
+					}
 					num = "";
 					num1dbl = false;
 				}
@@ -76,6 +86,7 @@ public class PostFix {
 						two = this.stack.pop();
 						one = this.stack.pop();
 					} catch (EmptyListException e) {
+						System.err.println("postfix line 81");
 						throw new OperationsException();
 					}
 					switch(head) {
@@ -86,6 +97,7 @@ public class PostFix {
 					case '*':	this.stack.push(one * two);
 					break;
 					case '/':	if(two == 0) {
+						System.err.println("postfix line 92");
 							throw new ZeroDivisionException();
 						} else {
 							this.stack.push(one / two);
@@ -93,17 +105,20 @@ public class PostFix {
 					break;
 					}
 				} else {
+					System.err.println("postfix line 100");
 					throw new IllegalInputException();
 				}
 			}
 			
 		}
 		if(this.stack.size() > 1) {
+			System.err.println("postfix line 107");
 			throw new OperandsException();
 		}
 		try {
 			this.answer = this.stack.pop();
 		} catch (EmptyListException e) {
+			System.err.println("postfix line 113");
 			throw new OperandsException("Error: Not Enough Operands");
 		}
 	}

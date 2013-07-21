@@ -8,14 +8,17 @@ public class PostFix {
 
 	private String input;
 	private LinkedStack<Double> stack;
-	private LinkedQueue<Integer> queue;
+//	private LinkedQueue<Integer> queue;
 	private LinkedQueue<Character> buffer;
 	private double answer;
 	
-	public PostFix(String in) throws IllegalInputException {
+	public PostFix(String in) throws IllegalInputException, OperandsException, OperationsException, ZeroDivisionException {
 		this.input = in;
+		while(this.input.contains("  ")) {
+			this.input = this.input.replaceFirst("  ", " ");
+		}
 		this.stack = new LinkedStack<Double>();
-		this.queue = new LinkedQueue<Integer>();
+//		this.queue = new LinkedQueue<Integer>();
 		this.buffer = new LinkedQueue<Character>();
 		this.answer = 0;
 		this.calculate();
@@ -25,14 +28,15 @@ public class PostFix {
 		return this.answer;
 	}
 	
-	private void calculate() throws IllegalInputException {
+	private void calculate() throws IllegalInputException, OperandsException, OperationsException, ZeroDivisionException {
 
 		for(int i = 0; i < this.input.length(); i++) {
 			char read = this.input.charAt(i);
 			if((read <= 57 && read >= 48) || read == ' ' || read == '-' || read == '+' || read == '*' || read == '/' || read == '.') {
 				this.buffer.add(read);
 			} else {
-				throw new IllegalArgumentException();
+				System.err.println("postfix line 38");
+				throw new IllegalInputException();
 			}
 		}
 		boolean num1done = false;
@@ -43,8 +47,7 @@ public class PostFix {
 			try {
 				head = this.buffer.poll();
 			} catch (EmptyListException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.err.println("postfix line 49");
 			}
 			if(!num1done && head <= 57 && head >= 48) {
 				num += head;
@@ -54,14 +57,26 @@ public class PostFix {
 					num1dbl = true;
 				} else {
 					//invalid number
+					System.err.println("postfix line 60");
+					throw new IllegalInputException();
 				}
 			} else if(head == ' ' && num.length() >= 1) {
-				this.stack.push(Double.parseDouble(num));
+				try {
+					this.stack.push(Double.parseDouble(num));
+				} catch (NumberFormatException e) {
+					throw new IllegalInputException();
+				}
 				num = "";
 				num1dbl = false;
+			} else if(head == ' ') {
+				continue;
 			} else if(head == '+' || head == '-' || head == '*' || head == '/') {
 				if(num.length() >= 1) {
-					this.stack.push(Double.parseDouble(num));
+					try {
+						this.stack.push(Double.parseDouble(num));
+					} catch (NumberFormatException e) {
+						throw new IllegalInputException();
+					}
 					num = "";
 					num1dbl = false;
 				}
@@ -71,8 +86,8 @@ public class PostFix {
 						two = this.stack.pop();
 						one = this.stack.pop();
 					} catch (EmptyListException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						System.err.println("postfix line 81");
+						throw new OperationsException();
 					}
 					switch(head) {
 					case '+':	this.stack.push(one + two);
@@ -81,20 +96,30 @@ public class PostFix {
 					break;
 					case '*':	this.stack.push(one * two);
 					break;
-					case '/':	this.stack.push(one / two);
+					case '/':	if(two == 0) {
+						System.err.println("postfix line 92");
+							throw new ZeroDivisionException();
+						} else {
+							this.stack.push(one / two);
+						}
 					break;
 					}
 				} else {
+					System.err.println("postfix line 100");
 					throw new IllegalInputException();
 				}
 			}
 			
 		}
+		if(this.stack.size() > 1) {
+			System.err.println("postfix line 107");
+			throw new OperandsException();
+		}
 		try {
 			this.answer = this.stack.pop();
 		} catch (EmptyListException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("postfix line 113");
+			throw new OperandsException("Error: Not Enough Operands");
 		}
 	}
 	

@@ -7,6 +7,6 @@ package net.cs.jimisthebest.t4rge7.xfixcalc;
 public class IllegalInputException extends Exception {
 
 	public IllegalInputException() {
-		super("Invalid input");
+		super("ERROR: Invalid input");
 	}
 }

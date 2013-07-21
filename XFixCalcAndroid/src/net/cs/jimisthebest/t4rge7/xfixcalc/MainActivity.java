@@ -105,22 +105,63 @@ public class MainActivity extends Activity {
 	public void calculate(View view) {
 		EditText input = (EditText) this.findViewById(R.id.input);
 		String toChange = "";
-		char zero = input.getText().charAt(0), last = input.getText().charAt(input.length() - 1);
-		if (zero == '+' || zero == '-' || zero == '*' || zero == '/') {
-			// prefix
-		} else if (last == '+' || last == '-' || last == '*' || last == '/') {
-			try {
-				PostFix test = new PostFix(input.getText().toString());
-				toChange = test.answer() + " ";
-				input.setTextColor(Color.BLACK);
-				input.setText(toChange);
-				input.setSelection(input.length());
-			} catch (IllegalInputException e) {
-				// TODO Auto-generated catch block
-				toChange = e.getMessage();
-				input.setTextColor(Color.RED);
-				input.setText(toChange);
+		String temp = input.getText().toString();
+		boolean end = true;
+		while(temp.charAt(0) == ' ') {
+			temp = temp.substring(1);
+	//		System.out.println(true);
+		}
+		while(temp.charAt(temp.length() - 1) == ' ') {
+			temp = temp.substring(0, temp.length() -1);
+		}
+		while(temp.contains("  ")) {
+			temp = temp.replaceFirst("  ", " ");
+		}
+		char zero = temp.charAt(0), last = temp.charAt(temp.length() - 1);
+		
+		
+		try {
+			if (zero == '+' || zero == '-' || zero == '*' || zero == '/') {
+				// prefix
+				PreFix pre = new PreFix(temp);
+				toChange = " " + pre.answer();
+				end = false;
+			} else if (last == '+' || last == '-' || last == '*' || last == '/') {
+				// postfix
+				PostFix post = new PostFix(temp);
+				toChange = post.answer() + " ";
+			} else {
+				// infix
+				InFix in = new InFix(temp);
+				toChange = in.answer() + "";
 			}
+			input.setTextColor(Color.BLACK);
+		} catch (IllegalInputException e) {
+			toChange = e.getMessage();
+			input.setTextColor(Color.RED);
+		} catch (OperandsException e) {
+			toChange = e.getMessage();
+			input.setTextColor(Color.RED);
+		} catch (OperationsException e) {
+			toChange = e.getMessage();
+			input.setTextColor(Color.RED);
+		} catch (ZeroDivisionException e) {
+			toChange = e.getMessage();
+			input.setTextColor(Color.RED);
+		}
+		input.setText(toChange);
+		if (input.getTextColors().equals(Color.RED)) {
+			input.setSelection(0, input.length());
+		} else if(!end) {
+			input.setSelection(0);
+		} else {
+			input.setSelection(input.length());
+		}
+		
+		if(!(temp.contains("+") || temp.contains("-") || temp.contains("*") || temp.contains("/")) && temp.matches("\\s*[\\d]*[\\.]?[\\d]*\\s*")) {
+			input.setText(temp.replaceAll(" ", ""));
+			input.setSelection(input.length());
+			input.setTextColor(Color.BLACK);
 		}
 
 	}
@@ -146,6 +187,7 @@ public class MainActivity extends Activity {
 			break;
 		case 6:
 			in = "";
+			input.setTextColor(Color.BLACK);
 			break;
 		case 7:
 			in += ".";

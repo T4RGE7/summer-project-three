@@ -1,4 +1,4 @@
-
+package net.cs.jimisthebest.t4rge7.xfixcalc;
 
 public class OperationsException extends Exception {
 
