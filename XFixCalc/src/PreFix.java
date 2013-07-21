@@ -3,7 +3,7 @@
  * @author James Roberts jpr242
  *
  */
-public class PostFix {
+public class PreFix {
 
 	private String input;
 	private LinkedStack<Double> stack;
@@ -11,7 +11,7 @@ public class PostFix {
 	private LinkedQueue<Character> buffer;
 	private double answer;
 	
-	public PostFix(String in) throws IllegalInputException, OperandsException, OperationsException, ZeroDivisionException {
+	public PreFix(String in) throws IllegalInputException, OperandsException, OperationsException, ZeroDivisionException {
 		this.input = in;
 		while(this.input.contains("  ")) {
 			this.input = this.input.replaceFirst("  ", " ");
@@ -29,7 +29,7 @@ public class PostFix {
 	
 	private void calculate() throws IllegalInputException, OperandsException, OperationsException, ZeroDivisionException {
 
-		for(int i = 0; i < this.input.length(); i++) {
+		for(int i = this.input.length() - 1; i >= 0; i--) {
 			char read = this.input.charAt(i);
 			if((read <= 57 && read >= 48) || read == ' ' || read == '-' || read == '+' || read == '*' || read == '/' || read == '.') {
 				this.buffer.add(read);
@@ -49,10 +49,10 @@ public class PostFix {
 				e.printStackTrace();
 			}
 			if(!num1done && head <= 57 && head >= 48) {
-				num += head;
+				num = head + num;
 			} else if(head == '.') {
 				if(!num1dbl) {
-					num += head;
+					num = head + num;
 					num1dbl = true;
 				} else {
 					//invalid number
@@ -79,16 +79,16 @@ public class PostFix {
 						throw new OperationsException();
 					}
 					switch(head) {
-					case '+':	this.stack.push(one + two);
+					case '+':	this.stack.push(two + one);
 					break;
-					case '-':	this.stack.push(one - two);
+					case '-':	this.stack.push(two - one);
 					break;
-					case '*':	this.stack.push(one * two);
+					case '*':	this.stack.push(two * one);
 					break;
-					case '/':	if(two == 0) {
+					case '/':	if(one == 0) {
 							throw new ZeroDivisionException();
 						} else {
-							this.stack.push(one / two);
+							this.stack.push(two / one);
 						}
 					break;
 					}
