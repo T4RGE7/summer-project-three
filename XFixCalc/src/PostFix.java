@@ -7,14 +7,14 @@ public class PostFix {
 
 	private String input;
 	private LinkedStack<Double> stack;
-	private LinkedQueue<Integer> queue;
+//	private LinkedQueue<Integer> queue;
 	private LinkedQueue<Character> buffer;
 	private double answer;
 	
-	public PostFix(String in) throws IllegalInputException {
+	public PostFix(String in) throws IllegalInputException, OperandsException, OperationsException, ZeroDivisionException {
 		this.input = in;
 		this.stack = new LinkedStack<Double>();
-		this.queue = new LinkedQueue<Integer>();
+//		this.queue = new LinkedQueue<Integer>();
 		this.buffer = new LinkedQueue<Character>();
 		this.answer = 0;
 		this.calculate();
@@ -24,7 +24,7 @@ public class PostFix {
 		return this.answer;
 	}
 	
-	private void calculate() throws IllegalInputException {
+	private void calculate() throws IllegalInputException, OperandsException, OperationsException, ZeroDivisionException {
 
 		for(int i = 0; i < this.input.length(); i++) {
 			char read = this.input.charAt(i);
@@ -53,11 +53,14 @@ public class PostFix {
 					num1dbl = true;
 				} else {
 					//invalid number
+					throw new IllegalInputException();
 				}
 			} else if(head == ' ' && num.length() >= 1) {
 				this.stack.push(Double.parseDouble(num));
 				num = "";
 				num1dbl = false;
+			} else if(head == ' ') {
+				continue;
 			} else if(head == '+' || head == '-' || head == '*' || head == '/') {
 				if(num.length() >= 1) {
 					this.stack.push(Double.parseDouble(num));
@@ -70,8 +73,7 @@ public class PostFix {
 						two = this.stack.pop();
 						one = this.stack.pop();
 					} catch (EmptyListException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						throw new OperationsException();
 					}
 					switch(head) {
 					case '+':	this.stack.push(one + two);
@@ -80,7 +82,11 @@ public class PostFix {
 					break;
 					case '*':	this.stack.push(one * two);
 					break;
-					case '/':	this.stack.push(one / two);
+					case '/':	if(two == 0) {
+							throw new ZeroDivisionException();
+						} else {
+							this.stack.push(one / two);
+						}
 					break;
 					}
 				} else {
@@ -89,11 +95,13 @@ public class PostFix {
 			}
 			
 		}
+		if(this.stack.size() > 1) {
+			throw new OperandsException();
+		}
 		try {
 			this.answer = this.stack.pop();
 		} catch (EmptyListException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new OperandsException("Error: Not Enough Operands");
 		}
 	}
 	
