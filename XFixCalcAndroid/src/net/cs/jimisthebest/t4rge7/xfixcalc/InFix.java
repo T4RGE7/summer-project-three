@@ -7,6 +7,7 @@ package net.cs.jimisthebest.t4rge7.xfixcalc;
 public class InFix {
 
 	private String input;
+	private String postFixed;
 //	private LinkedStack<Double> stack;
 	private LinkedStack<Character> opr;
 //	private LinkedQueue<Integer> queue;
@@ -132,6 +133,7 @@ public class InFix {
 				throw new IllegalInputException("InFix ERROR: Cannot Convert, Invalid Expression");
 			}
 		}
+		this.postFixed = postFix;
 		PostFix temp = new PostFix(postFix);
 		this.answer = temp.answer();
 	}
@@ -149,6 +151,10 @@ public class InFix {
 	
 	public double answer() {
 		return this.answer;
+	}
+	
+	public String postFixed() {
+		return this.postFixed;
 	}
 
 }

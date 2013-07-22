@@ -29,5 +29,6 @@ public class LinkedQueue<T> extends LinkedList<T> implements QueueInterface<T> {
 	public T front() throws EmptyListException {
 		return this.peekFirst();
 	}
+	
 
 }

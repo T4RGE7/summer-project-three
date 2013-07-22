@@ -44,7 +44,7 @@ public class PreFix {
 		String num = "";
 		while(!this.buffer.isEmpty()) {
 			char head = '\0';
-			char test = '\0';
+//			char test = '\0';
 			try {
 				head = this.buffer.poll();
 			} catch (EmptyListException e) {

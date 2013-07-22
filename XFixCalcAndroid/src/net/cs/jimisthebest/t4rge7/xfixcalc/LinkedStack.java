@@ -30,12 +30,6 @@ public class LinkedStack<T> extends LinkedList<T> implements StackInterface<T> {
 		return this.peekFirst();
 	}
 
-	@Override
-	public boolean isEmpty() {
-		if(this.head == null) {
-			return true;
-		}
-		return false;
-	}
+
 
 }
