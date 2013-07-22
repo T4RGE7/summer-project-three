@@ -4,7 +4,7 @@
  * @author James Roberts jpr242
  *
  */
-public class LinkedList<T> {
+public class LinkedList<T> implements LinkedListInterface<T> {
 
 	protected Node<T> head, tail, current;
 	private int size;
@@ -77,7 +77,7 @@ public class LinkedList<T> {
 	}
 	
 	//removes from front
-	public T remove() throws EmptyListException{
+	public T remove() throws EmptyListException {
 		if(this.isEmpty()) {
 			throw new EmptyListException();
 		}
