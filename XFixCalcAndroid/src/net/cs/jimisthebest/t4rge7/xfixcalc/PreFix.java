@@ -12,6 +12,14 @@ public class PreFix {
 	private LinkedQueue<Character> buffer;
 	private double answer;
 	
+	/**
+	 * Creates a new PreFix object and calls calculate to generate the answer to the input String
+	 * @param in the prefix String given
+	 * @throws IllegalInputException
+	 * @throws OperandsException
+	 * @throws OperationsException
+	 * @throws ZeroDivisionException
+	 */
 	public PreFix(String in) throws IllegalInputException, OperandsException, OperationsException, ZeroDivisionException {
 		this.input = in;
 		while(this.input.contains("  ")) {
@@ -24,10 +32,21 @@ public class PreFix {
 		this.calculate();
 	}
 	
+	/**
+	 * Returns the answer calculated as a double
+	 * @return answer
+	 */
 	public double answer() {
 		return this.answer;
 	}
 	
+	/**
+	 * Attempts to calculate the answer of given prefix input
+	 * @throws IllegalInputException
+	 * @throws OperandsException
+	 * @throws OperationsException
+	 * @throws ZeroDivisionException
+	 */
 	private void calculate() throws IllegalInputException, OperandsException, OperationsException, ZeroDivisionException {
 
 		for(int i = this.input.length() - 1; i >= 0; i--) {

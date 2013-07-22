@@ -12,6 +12,14 @@ public class PostFix {
 	private LinkedQueue<Character> buffer;
 	private double answer;
 	
+	/**
+	 * Creates a new PostFix object and calls calculate to generate the answer to the input String
+	 * @param in the postfix String given
+	 * @throws IllegalInputException
+	 * @throws OperandsException
+	 * @throws OperationsException
+	 * @throws ZeroDivisionException
+	 */
 	public PostFix(String in) throws IllegalInputException, OperandsException, OperationsException, ZeroDivisionException {
 		this.input = in;
 		while(this.input.contains("  ")) {
@@ -24,10 +32,21 @@ public class PostFix {
 		this.calculate();
 	}
 	
+	/**
+	 * Returns the answer calculated as a double
+	 * @return answer
+	 */
 	public double answer() {
 		return this.answer;
 	}
 	
+	/**
+	 * Attempts to calculate the answer of given postfix input
+	 * @throws IllegalInputException
+	 * @throws OperandsException
+	 * @throws OperationsException
+	 * @throws ZeroDivisionException
+	 */
 	private void calculate() throws IllegalInputException, OperandsException, OperationsException, ZeroDivisionException {
 
 		for(int i = 0; i < this.input.length(); i++) {

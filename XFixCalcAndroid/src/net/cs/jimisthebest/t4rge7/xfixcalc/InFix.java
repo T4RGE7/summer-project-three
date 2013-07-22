@@ -14,6 +14,14 @@ public class InFix {
 	private LinkedQueue<Character> buffer;
 	private double answer;
 	
+	/**
+	 * Creates a new InFix object and calls calculate to generate the answer to the input String using PostFix
+	 * @param in The input String
+	 * @throws IllegalInputException
+	 * @throws OperandsException
+	 * @throws OperationsException
+	 * @throws ZeroDivisionException
+	 */
 	public InFix(String in) throws IllegalInputException, OperandsException, OperationsException, ZeroDivisionException {
 		this.input = in;
 		while(this.input.contains("  ")) {
@@ -26,7 +34,13 @@ public class InFix {
 		this.opr = new LinkedStack<Character>();
 		this.calculate();
 	}
-	
+	/**
+	 * Calculates the answer, sets it
+	 * @throws IllegalInputException
+	 * @throws OperandsException
+	 * @throws OperationsException
+	 * @throws ZeroDivisionException
+	 */
 	private void calculate() throws IllegalInputException, OperandsException, OperationsException, ZeroDivisionException {
 		String postFix = "";
 		for(int i = 0; i < this.input.length(); i++) {
@@ -138,6 +152,11 @@ public class InFix {
 		this.answer = temp.answer();
 	}
 	
+	/**
+	 * Used to get the priority of operators
+	 * @param c The operator to test
+	 * @return the priority as an int, higher is more important
+	 */
 	private int priorityOf(char c) {
 		if(c == '*' || c == '/') {
 			return 2;
@@ -149,10 +168,18 @@ public class InFix {
 		return -1;
 	}
 	
+	/**
+	 * Gets the answer
+	 * @return the answer
+	 */
 	public double answer() {
 		return this.answer;
 	}
 	
+	/**
+	 * Gets the PostFix String generated
+	 * @return A PostFix String
+	 */
 	public String postFixed() {
 		return this.postFixed;
 	}

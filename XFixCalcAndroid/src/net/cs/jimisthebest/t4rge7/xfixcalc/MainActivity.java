@@ -22,6 +22,10 @@ public class MainActivity extends Activity {
 	
 	private boolean auto = true, pre = false, post = false, in = false;
 
+	/**
+	 * Runs at start
+	 * @param savedInstanceState a saved Bundle
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -143,6 +147,11 @@ public class MainActivity extends Activity {
 		
 	}
 
+	/**
+	 * Creates the menu
+	 * @param menu the menu to inflate
+	 * @return true always
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -150,6 +159,10 @@ public class MainActivity extends Activity {
 		return true;
 	}
 
+	/**
+	 * Looks at the input so far and attempts to solve
+	 * @param view the current view
+	 */
 	public void calculate(View view) { try {
 		TextView tv = (TextView) this.findViewById(R.id.tv);
 		EditText input = (EditText) this.findViewById(R.id.input);
@@ -285,6 +298,11 @@ public class MainActivity extends Activity {
 
 	} catch(Exception e){((EditText)this.findViewById(R.id.input)).setText("Untested Exception: " + e.getMessage());}}
 
+	/**
+	 * Called when one of the buttons besides '=' is pressed
+	 * @param view The current view
+	 * @param i the button pressed
+	 */
 	public void otherButton(View view, int i) {
 		EditText input = (EditText) this.findViewById(R.id.input);
 		String in = input.getText().toString();
@@ -333,6 +351,10 @@ public class MainActivity extends Activity {
 		input.setSelection(middle + 1);
 	}
 	
+	/**
+	 * Called when one of the toggle or radio buttons is pressed
+	 * @param i the button pressed
+	 */
 	public void toggle(int i) {
 //		EditText input = (EditText) this.findViewById(R.id.input);
 		ToggleButton auto = (ToggleButton) findViewById(R.id.autoToggle);
