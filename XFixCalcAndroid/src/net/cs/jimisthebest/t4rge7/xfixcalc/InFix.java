@@ -114,7 +114,7 @@ public class InFix {
 						}
 					} catch (EmptyListException e) {
 						System.err.println("infix line 82");
-						throw new IllegalInputException("InFix ERROR: Missing '('");
+						throw new IllegalInputException("InFix ERROR: Malformed Expression, Extra ')'.");
 					}
 				}
 			} else if(head == ' ') {
@@ -129,6 +129,8 @@ public class InFix {
 				char top = this.opr.pop();
 				if (top != '(' && top != ')') {
 					postFix += top;
+				} else {
+					throw new OperationsException("InFix ERROR: Malformed Expression, Extra '" + top + "'.");
 				}
 			} catch (EmptyListException e) {
 				System.err.println("infix line 96");
