@@ -12,6 +12,14 @@ public class PostFix {
 	private LinkedQueue<Character> buffer;
 	private double answer;
 	
+	/**
+	 * Creates a new PostFix object and calls calculate to generate the answer to the input String
+	 * @param in the postfix String given
+	 * @throws IllegalInputException
+	 * @throws OperandsException
+	 * @throws OperationsException
+	 * @throws ZeroDivisionException
+	 */
 	public PostFix(String in) throws IllegalInputException, OperandsException, OperationsException, ZeroDivisionException {
 		this.input = in;
 		while(this.input.contains("  ")) {
@@ -24,10 +32,21 @@ public class PostFix {
 		this.calculate();
 	}
 	
+	/**
+	 * Returns the answer calculated as a double
+	 * @return answer
+	 */
 	public double answer() {
 		return this.answer;
 	}
 	
+	/**
+	 * Attempts to calculate the answer of given postfix input
+	 * @throws IllegalInputException
+	 * @throws OperandsException
+	 * @throws OperationsException
+	 * @throws ZeroDivisionException
+	 */
 	private void calculate() throws IllegalInputException, OperandsException, OperationsException, ZeroDivisionException {
 
 		for(int i = 0; i < this.input.length(); i++) {
@@ -44,14 +63,35 @@ public class PostFix {
 		String num = "";
 		while(!this.buffer.isEmpty()) {
 			char head = '\0';
+			char test = '\0';
+			boolean negative = false;
 			try {
 				head = this.buffer.poll();
 			} catch (EmptyListException e) {
 				System.err.println("postfix line 49");
 
 			}
-			if(!num1done && head <= 57 && head >= 48) {
+			try {
+				if(head == '-') {
+					test = this.buffer.front();
+				}
+				if(test == '-' || test == '+' || test == '*' || test == '/') {
+					test = '\0';
+				}
+				if(test > 57 || test < 48) {
+					test = '\0';
+				}
+			} catch (EmptyListException e) {
+				
+			}
+			if (test != ' ' && head == '-' && test != '\0') {
+				negative = true;
+			}
+			if(!num1done && head <= 57 && head >= 48 || negative) {
 				num += head;
+//				if(negative) {
+//					num = '-' + num;
+//				}
 			} else if(head == '.') {
 				if(!num1dbl) {
 					num += head;
@@ -69,9 +109,9 @@ public class PostFix {
 				}
 				num = "";
 				num1dbl = false;
-			} else if(head == ' ') {
+			} /*else if(head == ' ') {
 				continue;
-			} else if(head == '+' || head == '-' || head == '*' || head == '/') {
+			}*/ else if(head == '+' || head == '-' || head == '*' || head == '/') {
 				if(num.length() >= 1) {
 					try {
 						this.stack.push(Double.parseDouble(num));
@@ -120,7 +160,7 @@ public class PostFix {
 			this.answer = this.stack.pop();
 		} catch (EmptyListException e) {
 			System.err.println("postfix line 113");
-			throw new OperandsException("PostFix Error: Not Enough Operands");
+			throw new OperandsException("PostFix ERROR: Not Enough Operands");
 		}
 	}
 	

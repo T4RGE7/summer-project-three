@@ -245,9 +245,9 @@ public class MainActivity extends Activity {
 			}
 		}
 		
-		if(this.in) {
-			temp = temp.replaceAll(" ", "");
-		}
+//		if(this.in) {
+//			temp = temp.replaceAll(" ", "");
+//		}
 		
 		
 		tv.setText(tv.getText() + " -> " + temp);
@@ -294,7 +294,7 @@ public class MainActivity extends Activity {
 		}
 		
 		if(this.in) {
-			tv.setText(tv.getText() + "\n Postfix -> " + veryTemp);
+			tv.setText(tv.getText() + "\nPostfix -> " + veryTemp);
 		}
 		
 		if(!(temp.contains("+") || temp.contains("-") || temp.contains("*") || temp.contains("/")) && temp.matches("\\s*[\\d]*[\\.]?[\\d]*\\s*")) {

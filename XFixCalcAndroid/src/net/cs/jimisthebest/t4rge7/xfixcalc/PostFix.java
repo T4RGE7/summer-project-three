@@ -1,4 +1,5 @@
 package net.cs.jimisthebest.t4rge7.xfixcalc;
+
 /**
  * 
  * @author James Roberts jpr242
@@ -75,10 +76,16 @@ public class PostFix {
 				if(head == '-') {
 					test = this.buffer.front();
 				}
+				if(test == '-' || test == '+' || test == '*' || test == '/') {
+					test = '\0';
+				}
+				if(test > 57 || test < 48) {
+					test = '\0';
+				}
 			} catch (EmptyListException e) {
 				
 			}
-			if (test != ' ' && head == '-') {
+			if (test != ' ' && head == '-' && test != '\0') {
 				negative = true;
 			}
 			if(!num1done && head <= 57 && head >= 48 || negative) {
@@ -103,9 +110,9 @@ public class PostFix {
 				}
 				num = "";
 				num1dbl = false;
-			} else if(head == ' ') {
+			} /*else if(head == ' ') {
 				continue;
-			} else if(head == '+' || head == '-' || head == '*' || head == '/') {
+			}*/ else if(head == '+' || head == '-' || head == '*' || head == '/') {
 				if(num.length() >= 1) {
 					try {
 						this.stack.push(Double.parseDouble(num));
@@ -154,7 +161,7 @@ public class PostFix {
 			this.answer = this.stack.pop();
 		} catch (EmptyListException e) {
 			System.err.println("postfix line 113");
-			throw new OperandsException("PostFix Error: Not Enough Operands");
+			throw new OperandsException("PostFix ERROR: Not Enough Operands");
 		}
 	}
 	

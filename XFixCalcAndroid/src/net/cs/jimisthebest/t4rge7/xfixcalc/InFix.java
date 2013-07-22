@@ -1,4 +1,5 @@
 package net.cs.jimisthebest.t4rge7.xfixcalc;
+
 /**
  * 
  * @author James Roberts jpr242
@@ -72,7 +73,7 @@ public class InFix {
 				
 			}
 			boolean negative = false;
-			if(test != ' ' && head == '-') {
+			if(test != ' ' && head == '-' && test != '\0') {
 				negative = true;
 			}
 			
@@ -116,6 +117,10 @@ public class InFix {
 						throw new IllegalInputException("InFix ERROR: Missing '('");
 					}
 				}
+			} else if(head == ' ') {
+				postFix += num + ' ';
+				num = "";
+				numDecimal = false;
 			}
 		}
 		postFix += num;
@@ -148,8 +153,18 @@ public class InFix {
 			}
 		}
 		this.postFixed = postFix;
+		try {
 		PostFix temp = new PostFix(postFix);
 		this.answer = temp.answer();
+		} catch(OperandsException e) {
+			throw new OperandsException(e.getMessage().replaceAll("PostFix", "InFix"));
+		} catch(OperationsException e) {
+			throw new OperationsException(e.getMessage().replaceAll("PostFix", "InFix"));
+		} catch(IllegalInputException e) {
+			throw new IllegalInputException(e.getMessage().replaceAll("PostFix", "InFix"));
+		} catch(ZeroDivisionException e) {
+			throw new ZeroDivisionException(e.getMessage().replaceAll("PostFix", "InFix"));
+		}
 	}
 	
 	/**
