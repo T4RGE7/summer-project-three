@@ -4,7 +4,7 @@ package net.cs.jimisthebest.t4rge7.xfixcalc;
  * @author James Roberts jpr242
  *
  */
-public class LinkedList<T> {
+public class LinkedList<T> implements LinkedListInterface<T> {
 
 	protected Node<T> head, tail, current;
 	private int size;
