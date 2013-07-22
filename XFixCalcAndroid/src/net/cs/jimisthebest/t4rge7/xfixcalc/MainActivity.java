@@ -252,6 +252,8 @@ public class MainActivity extends Activity {
 		
 		tv.setText(tv.getText() + " -> " + temp);
 		
+		String veryTemp = "";
+		
 		try {
 			if (this.pre) {
 				// prefix
@@ -266,6 +268,7 @@ public class MainActivity extends Activity {
 				// infix
 				InFix infix = new InFix(temp);
 				toChange = infix.answer() + "";
+				veryTemp = infix.postFixed();
 			}
 			input.setTextColor(Color.BLACK);
 		} catch (IllegalInputException e) {
@@ -288,6 +291,10 @@ public class MainActivity extends Activity {
 			input.setSelection(0);
 		} else {
 			input.setSelection(input.length());
+		}
+		
+		if(this.in) {
+			tv.setText(tv.getText() + "\n Postfix -> " + veryTemp);
 		}
 		
 		if(!(temp.contains("+") || temp.contains("-") || temp.contains("*") || temp.contains("/")) && temp.matches("\\s*[\\d]*[\\.]?[\\d]*\\s*")) {
