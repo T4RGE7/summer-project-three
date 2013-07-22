@@ -3,7 +3,7 @@
 public class InFix {
 
 	private String input;
-	private LinkedStack<Double> stack;
+//	private LinkedStack<Double> stack;
 	private LinkedStack<Character> opr;
 //	private LinkedQueue<Integer> queue;
 	private LinkedQueue<Character> buffer;
@@ -14,7 +14,7 @@ public class InFix {
 		while(this.input.contains("  ")) {
 			this.input = this.input.replaceFirst(" ", "");
 		}
-		this.stack = new LinkedStack<Double>();
+//		this.stack = new LinkedStack<Double>();
 //		this.queue = new LinkedQueue<Integer>();
 		this.buffer = new LinkedQueue<Character>();
 		this.answer = 0;
@@ -30,7 +30,7 @@ public class InFix {
 				this.buffer.add(read);
 			} else {
 				System.err.println("infix line 32");
-				throw new IllegalInputException();
+				throw new IllegalInputException("InFix ERROR: Invalid Character for InFix: " + read);
 			}
 		}
 		
@@ -42,7 +42,7 @@ public class InFix {
 				head = this.buffer.poll();
 			} catch (EmptyListException e) {
 				System.err.println("infix line 44");
-				throw new IllegalInputException();
+//				throw new IllegalInputException();
 			}
 			if(head <= 57 && head >= 48) {
 				num += head;
@@ -80,7 +80,7 @@ public class InFix {
 						}
 					} catch (EmptyListException e) {
 						System.err.println("infix line 82");
-						throw new IllegalInputException();
+						throw new IllegalInputException("InFix ERROR: Missing '('");
 					}
 				}
 			}
@@ -97,17 +97,23 @@ public class InFix {
 			}
 		}
 //		System.out.println(postFix);
-		while(postFix.charAt(0) == ' ') {
-			postFix = postFix.substring(1);
-//			System.out.println(true);
+		if (postFix.length() > 0) {
+			try {
+			while (postFix.charAt(0) == ' ') {
+				postFix = postFix.substring(1);
+				// System.out.println(true);
+			}
+			while (postFix.charAt(postFix.length() - 1) == ' ') {
+				postFix = postFix.substring(0, postFix.length() - 1);
+			}
+			while (postFix.contains("  ")) {
+				postFix = postFix.replaceFirst("  ", " ");
+			}
+			// System.out.println(postFix);
+			} catch (StringIndexOutOfBoundsException e) {
+				throw new IllegalInputException("InFix ERROR: Cannot Convert, Invalid Expression");
+			}
 		}
-		while(postFix.charAt(postFix.length() - 1) == ' ') {
-			postFix = postFix.substring(0, postFix.length() -1);
-		}
-		while(postFix.contains("  ")) {
-			postFix = postFix.replaceFirst("  ", " ");
-		}
-//		System.out.println(postFix);
 		PostFix temp = new PostFix(postFix);
 		this.answer = temp.answer();
 	}

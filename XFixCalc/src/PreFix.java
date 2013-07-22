@@ -36,7 +36,7 @@ public class PreFix {
 				this.buffer.add(read);
 			} else {
 				System.err.println("prefix line 38");
-				throw new IllegalInputException();
+				throw new IllegalInputException("PreFix ERROR: Invalid Character for PreFix: " + read);
 			}
 		}
 		boolean num1done = false;
@@ -48,6 +48,7 @@ public class PreFix {
 				head = this.buffer.poll();
 			} catch (EmptyListException e) {
 				System.err.println("prefix line 49");
+
 			}
 			if(!num1done && head <= 57 && head >= 48) {
 				num = head + num;
@@ -58,13 +59,13 @@ public class PreFix {
 				} else {
 					//invalid number
 					System.err.println("prefix line 59");
-					throw new IllegalInputException();
+					throw new IllegalInputException("PreFix ERROR: Invalid Number, Too Many Decimals");
 				}
 			} else if(head == ' ' && num.length() >= 1) {
 				try {
 					this.stack.push(Double.parseDouble(num));
 				} catch (NumberFormatException e) {
-					throw new IllegalInputException();
+					throw new IllegalInputException("PreFix ERROR: Unparsable Number " + num);
 				}
 				num = "";
 				num1dbl = false;
@@ -75,7 +76,7 @@ public class PreFix {
 					try {
 						this.stack.push(Double.parseDouble(num));
 					} catch (NumberFormatException e) {
-						throw new IllegalInputException();
+						throw new IllegalInputException("PreFix ERROR: Unparsable Number " + num);
 					}
 					num = "";
 					num1dbl = false;
@@ -86,7 +87,7 @@ public class PreFix {
 						two = this.stack.pop();
 						one = this.stack.pop();
 					} catch (EmptyListException e) {
-						throw new OperationsException();
+						throw new OperationsException("PreFix ERROR: Too Many Operations");
 					}
 					switch(head) {
 					case '+':	this.stack.push(two + one);
@@ -97,7 +98,7 @@ public class PreFix {
 					break;
 					case '/':	if(one == 0) {
 							System.err.println("prefix line 90");
-							throw new ZeroDivisionException();
+							throw new ZeroDivisionException("PreFix ERROR: Division by Zero");
 						} else {
 							this.stack.push(two / one);
 						}
@@ -105,20 +106,20 @@ public class PreFix {
 					}
 				} else {
 					System.err.println("prefix line 98");
-					throw new IllegalInputException();
+					throw new OperationsException("PreFix ERROR: Too Many Operations");
 				}
 			}
 			
 		}
 		if(this.stack.size() > 1) {
 			System.err.println("prefix line 105");
-			throw new OperandsException();
+			throw new OperandsException("PreFix ERROR: Too Many Operands");
 		}
 		try {
 			this.answer = this.stack.pop();
 		} catch (EmptyListException e) {
 			System.err.println("prefix line 111");
-			throw new OperandsException("Error: Not Enough Operands");
+			throw new OperandsException("PreFix Error: Not Enough Operands");
 		}
 	}
 	

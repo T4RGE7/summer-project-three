@@ -2,6 +2,11 @@
 
 public class OperandsException extends Exception {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4518820558771744534L;
+
 	public OperandsException() {
 		super("Error: Too Many Operands");
 	}
