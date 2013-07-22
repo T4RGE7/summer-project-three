@@ -196,7 +196,7 @@ public class MainActivity extends Activity {
 		boolean special = false;
 		try {
 			if(zero == '-') {
-				if(temp.charAt(1) != ' ') {
+				if(temp.charAt(1) >= 48 && temp.charAt(1) <= 57) {
 					special = true;
 				}
 			}
@@ -208,13 +208,13 @@ public class MainActivity extends Activity {
 				this.pre = false;
 				this.post = true;
 				this.in = false;
-				tv.setText("Auto: Prefix");
-			} else if (zero == '+' || zero == '-' || zero == '*' || zero == '/') {
+				tv.setText("Auto: Postfix");
+			} else if ((zero == '+' || zero == '-' || zero == '*' || zero == '/') && !special) {
 				// prefix
 				this.pre = true;
 				this.post = false;
 				this.in = false;
-				tv.setText("Auto: Postfix");
+				tv.setText("Auto: Prefix");
 			} else {
 				// infix
 				this.pre = false;

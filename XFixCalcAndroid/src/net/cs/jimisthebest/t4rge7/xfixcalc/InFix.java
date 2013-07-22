@@ -16,7 +16,7 @@ public class InFix {
 	public InFix(String in) throws IllegalInputException, OperandsException, OperationsException, ZeroDivisionException {
 		this.input = in;
 		while(this.input.contains("  ")) {
-			this.input = this.input.replaceFirst(" ", "");
+			this.input = this.input.replaceFirst("  ", " ");
 		}
 //		this.stack = new LinkedStack<Double>();
 //		this.queue = new LinkedQueue<Integer>();
@@ -30,7 +30,7 @@ public class InFix {
 		String postFix = "";
 		for(int i = 0; i < this.input.length(); i++) {
 			char read = this.input.charAt(i);
-			if((read <= 57 && read >= 48) || read == '-' || read == '+' || read == '*' || read == '/' || read == '.' || read == '(' || read == ')') {
+			if((read <= 57 && read >= 48) || read == '-' || read == '+' || read == '*' || read == '/' || read == '.' || read == '(' || read == ')' || read == ' ') {
 				this.buffer.add(read);
 			} else {
 				System.err.println("infix line 32");
@@ -42,13 +42,27 @@ public class InFix {
 		boolean numDecimal = false;
 		while(!this.buffer.isEmpty()) {
 			char head = '\0';
+			char test = '\0';
 			try {
 				head = this.buffer.poll();
 			} catch (EmptyListException e) {
 				System.err.println("infix line 44");
 //				throw new IllegalInputException();
 			}
-			if(head <= 57 && head >= 48) {
+			try {
+				if(head == '-') {
+					test = this.buffer.front();
+				}
+			} catch(EmptyListException e) {
+				
+			}
+			boolean negative = false;
+			if(test != ' ' && head == '-') {
+				negative = true;
+			}
+			
+			
+			if((head <= 57 && head >= 48) || negative) {
 				num += head;
 			} else if(head == '.' && !numDecimal) {
 				numDecimal = true;
