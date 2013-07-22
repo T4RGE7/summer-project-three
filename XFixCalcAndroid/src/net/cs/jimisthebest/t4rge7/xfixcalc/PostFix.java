@@ -44,14 +44,29 @@ public class PostFix {
 		String num = "";
 		while(!this.buffer.isEmpty()) {
 			char head = '\0';
+			char test = '\0';
+			boolean negative = false;
 			try {
 				head = this.buffer.poll();
 			} catch (EmptyListException e) {
 				System.err.println("postfix line 49");
 
 			}
-			if(!num1done && head <= 57 && head >= 48) {
+			try {
+				if(head == '-') {
+					test = this.buffer.front();
+				}
+			} catch (EmptyListException e) {
+				
+			}
+			if (test != ' ' && head == '-') {
+				negative = true;
+			}
+			if(!num1done && head <= 57 && head >= 48 || negative) {
 				num += head;
+//				if(negative) {
+//					num = '-' + num;
+//				}
 			} else if(head == '.') {
 				if(!num1dbl) {
 					num += head;

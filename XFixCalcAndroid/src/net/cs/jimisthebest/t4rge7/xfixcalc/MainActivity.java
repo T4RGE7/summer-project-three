@@ -150,7 +150,7 @@ public class MainActivity extends Activity {
 		return true;
 	}
 
-	public void calculate(View view) {
+	public void calculate(View view) { try {
 		TextView tv = (TextView) this.findViewById(R.id.tv);
 		EditText input = (EditText) this.findViewById(R.id.input);
 //		RadioButton pre = (RadioButton) findViewById(R.id.pre);
@@ -159,29 +159,60 @@ public class MainActivity extends Activity {
 		String toChange = "";
 		String temp = input.getText().toString();
 		boolean end = true;
-		while(temp.charAt(0) == ' ') {
-			temp = temp.substring(1);
-	//		System.out.println(true);
+//		if(temp.length() == 0) {
+//			return;
+//		}
+		boolean one = false, two = false;
+		
+		while(temp.length() > 0 && (!one || !two)) {
+			if(temp.charAt(0) == ' ') {
+				temp = temp.substring(1);
+				continue;
+			}
+			one = true;
+			if(temp.charAt(temp.length() - 1) == ' ') {
+				temp = temp.substring(0, temp.length() -1);
+				continue;
+			}
+			two = true;
 		}
-		while(temp.charAt(temp.length() - 1) == ' ') {
-			temp = temp.substring(0, temp.length() -1);
-		}
+		
+//		while(temp.length() > 0 && temp.charAt(0) == ' ') {
+//			temp = temp.substring(1);
+//	//		System.out.println(true);
+//		}
+//		while(temp.charAt(temp.length() - 1) == ' ' && temp.length() > 0) {
+//			temp = temp.substring(0, temp.length() -1);
+//		}
 		while(temp.contains("  ")) {
 			temp = temp.replaceFirst("  ", " ");
 		}
-		char zero = temp.charAt(0), last = temp.charAt(temp.length() - 1);
+		char zero = '\0', last = '\0';
+		try {
+			zero = temp.charAt(0); last = temp.charAt(temp.length() - 1);
+		} catch(IndexOutOfBoundsException e) {
+			return;
+		}
+		boolean special = false;
+		try {
+			if(zero == '-') {
+				if(temp.charAt(1) != ' ') {
+					special = true;
+				}
+			}
+		} catch(IndexOutOfBoundsException e){}
 		
 		if(this.auto) {
-			if (zero == '+' || zero == '-' || zero == '*' || zero == '/') {
-				// prefix
-				this.pre = true;
-				this.post = false;
-				this.in = false;
-				tv.setText("Auto: Prefix");
-			} else if (last == '+' || last == '-' || last == '*' || last == '/') {
+			if (last == '+' || last == '-' || last == '*' || last == '/') {
 				// postfix
 				this.pre = false;
 				this.post = true;
+				this.in = false;
+				tv.setText("Auto: Prefix");
+			} else if (zero == '+' || zero == '-' || zero == '*' || zero == '/') {
+				// prefix
+				this.pre = true;
+				this.post = false;
 				this.in = false;
 				tv.setText("Auto: Postfix");
 			} else {
@@ -199,6 +230,10 @@ public class MainActivity extends Activity {
 			} else if(this.in) {
 				tv.setText("Manual: Infix");
 			}
+		}
+		
+		if(this.in) {
+			temp = temp.replaceAll(" ", "");
 		}
 		
 		
@@ -248,43 +283,54 @@ public class MainActivity extends Activity {
 			input.setTextColor(Color.BLACK);
 		}
 
-	}
+	} catch(Exception e){((EditText)this.findViewById(R.id.input)).setText("Untested Exception: " + e.getMessage());}}
 
 	public void otherButton(View view, int i) {
 		EditText input = (EditText) this.findViewById(R.id.input);
 		String in = input.getText().toString();
+		int middle = input.getSelectionStart();
+		String half1 = "", half2 = "";
+		if(middle == 0) {
+			half2 = in;
+		} else if(middle == in.length()) {
+			half1 = in;
+		} else {
+			half1 = in.substring(0, middle);
+			half2 = in.substring(middle);
+		}
 		switch (i) {
 		case 1:
-			in += "+";
+			in = half1 + "+" + half2;
 			break;
 		case 2:
-			in += "-";
+			in = half1 + "-" + half2;
 			break;
 		case 3:
-			in += "*";
+			in = half1 + "*" + half2;
 			break;
 		case 4:
-			in += "/";
+			in = half1 + "/" + half2;
 			break;
 		case 5:
-			in += " ";
+			in = half1 + " " + half2;
 			break;
 		case 6:
 			in = "";
 			input.setTextColor(Color.BLACK);
+			middle = -1;
 			break;
 		case 7:
-			in += ".";
+			in = half1 + "." + half2;
 			break;
 		case 8:
-			in += "(";
+			in = half1 + "(" + half2;
 			break;
 		case 9:
-			in += ")";
+			in = half1 + ")" + half2;
 			break;
 		}
 		input.setText(in);
-		input.setSelection(input.length());
+		input.setSelection(middle + 1);
 	}
 	
 	public void toggle(int i) {
