@@ -1,5 +1,9 @@
 package net.cs.jimisthebest.t4rge7.xfixcalc;
-
+/**
+ * 
+ * @author James Roberts jpr242
+ *
+ */
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
