@@ -19,95 +19,166 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:digits="0123456789+*-. /()"
             android:hint="@string/inputHint"
             android:inputType="phone"
-            android:digits="0123456789+*-. /()"
             android:text="@string/input" />
     </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
+    <RelativeLayout
+        android:id="@+id/relativeLayout2"
         android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/relativeLayout1"
-        android:orientation="horizontal" >
-
-        <Button
-            android:id="@+id/calculate"
-            android:layout_width="wrap_content"
-            android:layout_height="100dp"
-            android:text="@string/calculate" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_below="@id/relativeLayout1"
-        android:layout_toRightOf="@id/linearLayout2"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:orientation="horizontal" >
+        android:layout_below="@id/relativeLayout1" >
 
         <Button
             android:id="@+id/add"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="0.2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
             android:text="@string/add" />
 
         <Button
             android:id="@+id/subtract"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="0.2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/add"
             android:text="@string/subtract" />
 
         <Button
             android:id="@+id/multiply"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="0.2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/subtract"
             android:text="@string/multiply" />
 
         <Button
             android:id="@+id/divide"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="0.2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/multiply"
             android:text="@string/divide" />
-    </LinearLayout>
+    </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayout3"
+    <RelativeLayout
+        android:id="@+id/relativeLayout3"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/linearLayout1"
-        android:layout_toRightOf="@id/linearLayout2"
-        android:orientation="horizontal" >
+        android:layout_below="@id/relativeLayout2" >
+
+        <Button
+            android:id="@+id/left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="@string/left" />
+
+        <Button
+            android:id="@+id/right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/left"
+            android:text="@string/right" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/relativeLayout3" >
 
         <Button
             android:id="@+id/space"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="0.4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
             android:text="@string/space" />
 
         <Button
             android:id="@+id/clear"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="0.3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/space"
             android:text="@string/clear" />
 
         <Button
             android:id="@+id/decimal"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="0.2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/clear"
             android:text="@string/decimal" />
-    </LinearLayout>
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/calculate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/relativeLayout4"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@id/relativeLayout2"
+        android:layout_below="@id/relativeLayout1"
+        android:text="@string/calculate" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/relativeLayout4"
+        android:layout_centerHorizontal="true" >
+
+        <ToggleButton
+            android:id="@+id/autoToggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="@string/autoToggle"
+            android:textOff="@string/autoToggle"
+            android:textOn="@string/autoToggle" />
+
+        <RadioGroup
+            android:id="@+id/group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@id/autoToggle"
+            android:orientation="horizontal" >
+
+            <RadioButton
+                android:id="@+id/pre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pre" />
+
+            <RadioButton
+                android:id="@+id/post"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/post" />
+
+            <RadioButton
+                android:id="@+id/in"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/in" />
+        </RadioGroup>
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/relativeLayout6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/relativeLayout5" >
+        
+        <TextView
+            android:id="@+id/tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tv" />
+        
+    </RelativeLayout>
 
 </RelativeLayout>

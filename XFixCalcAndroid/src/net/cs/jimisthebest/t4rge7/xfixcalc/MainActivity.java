@@ -8,9 +8,15 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 public class MainActivity extends Activity {
+	
+	private boolean auto = true, pre = false, post = false, in = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +40,15 @@ public class MainActivity extends Activity {
 		final Button clear = (Button) findViewById(R.id.clear);
 		final Button decimal = (Button) findViewById(R.id.decimal);
 		final Button calculate = (Button) findViewById(R.id.calculate);
+		final Button left = (Button) findViewById(R.id.left);
+		final Button right = (Button) findViewById(R.id.right);
+		final ToggleButton auto = (ToggleButton) findViewById(R.id.autoToggle);
+		final RadioGroup group = (RadioGroup) findViewById(R.id.group);
 
+		
+		auto.setChecked(true);
+		
+		
 		add.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -91,7 +105,37 @@ public class MainActivity extends Activity {
 				calculate(v);
 			}
 		});
+		left.setOnClickListener(new View.OnClickListener() {
 
+			@Override
+			public void onClick(View v) {
+				otherButton(v, 8);
+			}
+		});
+		right.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				otherButton(v, 9);
+			}
+		});
+		auto.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				toggle(0);
+			}
+		});
+
+		group.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(RadioGroup group, int checkedId) {
+				toggle(1);
+			}
+
+		});
+		
 		
 	}
 
@@ -103,7 +147,11 @@ public class MainActivity extends Activity {
 	}
 
 	public void calculate(View view) {
+		TextView tv = (TextView) this.findViewById(R.id.tv);
 		EditText input = (EditText) this.findViewById(R.id.input);
+//		RadioButton pre = (RadioButton) findViewById(R.id.pre);
+//		RadioButton post = (RadioButton) findViewById(R.id.post);
+//		RadioButton in = (RadioButton) findViewById(R.id.in);
 		String toChange = "";
 		String temp = input.getText().toString();
 		boolean end = true;
@@ -119,21 +167,53 @@ public class MainActivity extends Activity {
 		}
 		char zero = temp.charAt(0), last = temp.charAt(temp.length() - 1);
 		
-		
-		try {
+		if(this.auto) {
 			if (zero == '+' || zero == '-' || zero == '*' || zero == '/') {
 				// prefix
-				PreFix pre = new PreFix(temp);
-				toChange = " " + pre.answer();
-				end = false;
+				this.pre = true;
+				this.post = false;
+				this.in = false;
+				tv.setText("Auto: Prefix");
 			} else if (last == '+' || last == '-' || last == '*' || last == '/') {
 				// postfix
-				PostFix post = new PostFix(temp);
-				toChange = post.answer() + " ";
+				this.pre = false;
+				this.post = true;
+				this.in = false;
+				tv.setText("Auto: Postfix");
 			} else {
 				// infix
-				InFix in = new InFix(temp);
-				toChange = in.answer() + "";
+				this.pre = false;
+				this.post = false;
+				this.in = true;
+				tv.setText("Auto: Infix");
+			}
+		} else {
+			if(this.pre) {
+				tv.setText("Manual: Prefix");
+			} else if(this.post) {
+				tv.setText("Manual: Postfix");
+			} else if(this.in) {
+				tv.setText("Manual: Infix");
+			}
+		}
+		
+		
+		tv.setText(tv.getText() + " -> " + temp);
+		
+		try {
+			if (this.pre) {
+				// prefix
+				PreFix prefix = new PreFix(temp);
+				toChange = " " + prefix.answer();
+				end = false;
+			} else if (this.post) {
+				// postfix
+				PostFix postfix = new PostFix(temp);
+				toChange = postfix.answer() + " ";
+			} else if (this.in){
+				// infix
+				InFix infix = new InFix(temp);
+				toChange = infix.answer() + "";
 			}
 			input.setTextColor(Color.BLACK);
 		} catch (IllegalInputException e) {
@@ -192,9 +272,58 @@ public class MainActivity extends Activity {
 		case 7:
 			in += ".";
 			break;
+		case 8:
+			in += "(";
+			break;
+		case 9:
+			in += ")";
+			break;
 		}
 		input.setText(in);
 		input.setSelection(input.length());
+	}
+	
+	public void toggle(int i) {
+//		EditText input = (EditText) this.findViewById(R.id.input);
+		ToggleButton auto = (ToggleButton) findViewById(R.id.autoToggle);
+		RadioGroup group = (RadioGroup) findViewById(R.id.group);
+		RadioButton pre = (RadioButton) findViewById(R.id.pre);
+		RadioButton post = (RadioButton) findViewById(R.id.post);
+		RadioButton in = (RadioButton) findViewById(R.id.in);
+		
+//		input.setText("CAlled");
+		if(i == 0) {
+			auto.setChecked(true);
+			auto.setChecked(true);
+			pre.setChecked(false);
+			post.setChecked(false);
+			in.setChecked(false);
+//			input.setText("HERE");
+				this.auto = true;
+				this.pre = false;
+				this.post = false;
+				this.in = false;
+		} else {
+//			input.setText("Radio");
+			auto.setChecked(false);
+
+			if(group.getCheckedRadioButtonId() == R.id.pre) {
+				this.auto = false;
+				this.pre = true;
+				this.post = false;
+				this.in = false;
+			} else if(group.getCheckedRadioButtonId() == R.id.post) {
+				this.auto = false;
+				this.pre = false;
+				this.post = true;
+				this.in = false;
+			} else if(group.getCheckedRadioButtonId() == R.id.in) {
+				this.auto = false;
+				this.pre = false;
+				this.post = false;
+				this.in = true;
+			}
+		}
 	}
 
 }

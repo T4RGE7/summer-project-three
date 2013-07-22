@@ -36,11 +36,13 @@ public class Driver {
 		System.out.println(test2.answer());
 		
 		
-		test = "30";
-		InFix test3 = new InFix(test);
-		System.out.println(test3.answer());
+		test = "10 34 5 + 30-";
+		test1 = new PostFix(test);
+		System.out.println(test1.answer());
 		
-		
+		test = "10 34 5 + 30-";
+		test1 = new PostFix(test);
+		System.out.println(test1.answer());
 	}
 
 }

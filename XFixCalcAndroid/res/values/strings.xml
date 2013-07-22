@@ -13,6 +13,12 @@
     <string name="space">Space</string>
     <string name="clear">Clear</string>
     <string name="decimal">.</string>
-    
+    <string name="left">(</string>
+    <string name="right">)</string>
+    <string name="autoToggle">Auto</string>
+    <string name="pre">PreFix</string>
+    <string name="post">PostFix</string>
+    <string name="in">InFix</string>
+    <string name="tv"></string>
 
 </resources>

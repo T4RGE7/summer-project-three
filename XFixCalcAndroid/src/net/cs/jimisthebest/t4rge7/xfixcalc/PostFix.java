@@ -36,7 +36,7 @@ public class PostFix {
 				this.buffer.add(read);
 			} else {
 				System.err.println("postfix line 38");
-				throw new IllegalInputException();
+				throw new IllegalInputException("PostFix ERROR: Invalid Character for PostFix: " + read);
 			}
 		}
 		boolean num1done = false;
@@ -48,6 +48,7 @@ public class PostFix {
 				head = this.buffer.poll();
 			} catch (EmptyListException e) {
 				System.err.println("postfix line 49");
+
 			}
 			if(!num1done && head <= 57 && head >= 48) {
 				num += head;
@@ -58,13 +59,13 @@ public class PostFix {
 				} else {
 					//invalid number
 					System.err.println("postfix line 60");
-					throw new IllegalInputException();
+					throw new IllegalInputException("PostFix ERROR: Invalid Number, Too Many Decimals");
 				}
 			} else if(head == ' ' && num.length() >= 1) {
 				try {
 					this.stack.push(Double.parseDouble(num));
 				} catch (NumberFormatException e) {
-					throw new IllegalInputException();
+					throw new IllegalInputException("PostFix ERROR: Unparsable Number " + num);
 				}
 				num = "";
 				num1dbl = false;
@@ -75,7 +76,7 @@ public class PostFix {
 					try {
 						this.stack.push(Double.parseDouble(num));
 					} catch (NumberFormatException e) {
-						throw new IllegalInputException();
+						throw new IllegalInputException("PostFix ERROR: Unparsable Number " + num);
 					}
 					num = "";
 					num1dbl = false;
@@ -87,7 +88,7 @@ public class PostFix {
 						one = this.stack.pop();
 					} catch (EmptyListException e) {
 						System.err.println("postfix line 81");
-						throw new OperationsException();
+						throw new OperationsException("PostFix ERROR: Too Many Operations");
 					}
 					switch(head) {
 					case '+':	this.stack.push(one + two);
@@ -98,7 +99,7 @@ public class PostFix {
 					break;
 					case '/':	if(two == 0) {
 						System.err.println("postfix line 92");
-							throw new ZeroDivisionException();
+							throw new ZeroDivisionException("PostFix ERROR: Division by Zero");
 						} else {
 							this.stack.push(one / two);
 						}
@@ -106,20 +107,20 @@ public class PostFix {
 					}
 				} else {
 					System.err.println("postfix line 100");
-					throw new IllegalInputException();
+					throw new OperationsException("PostFix ERROR: Too Many Operations");
 				}
 			}
 			
 		}
 		if(this.stack.size() > 1) {
 			System.err.println("postfix line 107");
-			throw new OperandsException();
+			throw new OperandsException("PostFix ERROR: Too Many Operands");
 		}
 		try {
 			this.answer = this.stack.pop();
 		} catch (EmptyListException e) {
 			System.err.println("postfix line 113");
-			throw new OperandsException("Error: Not Enough Operands");
+			throw new OperandsException("PostFix Error: Not Enough Operands");
 		}
 	}
 	
